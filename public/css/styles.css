@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+    background-color: #001f3f;
+    color: #ffffff;
+    font-family: "Poppins", serif;
+    font-style: normal;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+h1 {
+    font-weight: 600;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+
+a {
+    color: #ffffff;
+}
+
+
+/* Liens de navigation*/
+#icon-img{
+    width: 100px;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: center; 
+    gap: 20px; 
+    padding: 10px;
+}
+  
+.nav-links a {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #001f3f;
+    color: #ffffff; 
+    padding: 20px;
+    border-radius: 30px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+    text-align: center;
+    margin: 2%;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.nav-links a:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}c
+
+
+/* Lire le Coran*/
+select {
+    padding: 10px;
+    font-size: 16px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.verse-container {
+    margin-top: 30px;
+}
+
+.verse-container p {
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 10px;
+    width: 40%; /* à modifier selon vos besoins */
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.verse-container h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-top: 20px;
+    color: #80d4ff;
+}
+  
+/*99 Names - names.html*/
+#namesList {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px; 
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: center; 
+}
+.name-card {
+    background-color: #001f3f;
+    color: #ffffff; 
+    padding: 15px;
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+    text-align: center;
+    width: 200px;
+    /*font-family: Arial, sans-serif;*/
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+  
+.name-card:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+  
+
+.name-card h3 {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #80d4ff; 
+}
+  
+.name-card p {
+    margin: 0;
+    font-size: 14px;
+    color: #d9f2ff; 
+}
+
+/* Horaires de prière*/
+
+  
