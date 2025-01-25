@@ -21,8 +21,28 @@ h1 {
 
 a {
     color: #ffffff;
+    text-decoration:none;
 }
 
+input {
+    font-family: "Poppins", serif;
+    font-style: normal;
+    border-radius: 15px;
+    padding: 6px 20px;
+    margin-bottom: 15px;
+}
+
+button {
+    font-family: "Poppins", serif;
+    font-style: normal;
+}
+
+#prayerbutton{
+    background-color: #0074D9; 
+    border-radius: 30px;
+    padding: 6px 15px;
+    color: white;
+}
 
 /* Liens de navigation*/
 #icon-img{
