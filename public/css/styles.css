@@ -72,8 +72,15 @@ button{
 .nav-links a:hover {
     transform: translateY(-5px); 
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-}c
+}
 
+@media (max-width: 800px) {
+    .nav-links {
+      flex-direction: column; /* Aligne les éléments verticalement */
+      align-items: center; /* Centre les éléments */
+      gap: 10px; /* Moins d'espace entre les liens */
+    }
+}
 
 /* Lire le Coran*/
 select {

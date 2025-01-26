@@ -14,6 +14,7 @@ function getInputValue() {
             { name: 'Isha', key: 'isha' }
             ];
             document.getElementById("date").textContent = data_.date_for
+            document.getElementById("city").textContent = inputValue
             prayers.forEach(prayer => {
                 const prayerText = `${prayer.name}: ${data_[prayer.key]}`;
                 document.getElementById(prayer.key).textContent = prayerText;
