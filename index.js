@@ -24,6 +24,10 @@ app.get('/quran.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html', 'prayertimes.html'));
   });
 
+app.get('/versegenerator.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'versegenerator.html'));
+});
+
 
 app.get('/api/coran', (req, res) => {
     res.json(quranData);

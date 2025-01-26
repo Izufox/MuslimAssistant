@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MuslimAssistant</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    
+</head>
+<body>
+    <a href="./"><h1>MuslimAssistant</h1></a>
+    <div class="container">
+        <h1 id="v-arabic">Verset en Arabe</h1>
+        <h2 id="v-french">Traduction en Français</h2>
+        <p id="sourate">Sourate : ...</p>
+        <p id="nb-verset">Verset : ...</p>
+        <button id="generateButton" onclick="generateVerse()">Générer un Verset</button>
+    </div>
+</body>
+<style>
+.container {
+  text-align: center;
+  padding: 2%;
+  border-radius: 10px;
+  background-color: #001f3f; /* Fond légèrement plus clair */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3); /* Ombre subtile */
+  width: 90%;
+  max-width: 600px;
+}
+</style>
+<script>
+async function fetchData() {
+  const response = await fetch('/api/coran');
+  const data = await response.json();
+  return data; 
+}
+
+async function generateVerse() {
+    const quranData = await fetchData(); 
+    const sourateIndex = Math.floor(Math.random() * quranData.sourates.length);
+
+    const sourate = quranData.sourates[sourateIndex];
+    const versetIndex = Math.floor(Math.random() * sourate.versets.length);
+    const verset = sourate.versets[versetIndex];
+
+    document.getElementById("v-arabic").textContent = verset.text_arabe;
+    document.getElementById("v-french").textContent = verset.text;
+    document.getElementById("sourate").textContent = `Sourate : ${sourate.nom_phonetique}`;
+    document.getElementById("nb-verset").textContent = `Verset : ${versetIndex + 1}`;
+}
+
+generateVerse()
+</script>
+</html>
