@@ -51,56 +51,67 @@ if ("geolocation" in navigator) {
         console.error("La géolocalisation n'est pas supportée par ce navigateur.");
     }
 
-    async function requestPermission() {
-        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-            try {
-                const permissionState = await DeviceOrientationEvent.requestPermission();
-                if (permissionState === 'granted') {
-                    console.log("Permission accordée !");
-                    startOrientationTracking();
-                } else {
-                    console.log("Permission refusée.");
-                }
-            } catch (error) {
-                console.error("Erreur lors de la demande de permission :", error);
-            }
-        } else {
-            console.log("L'API DeviceOrientation est directement accessible.");
-            startOrientationTracking();
-        }
-    }
-
-let initialAlpha = null; // Stocker l'orientation initiale
-
+// Fonction pour démarrer le suivi d'orientation
 function startOrientationTracking() {
     if (!window.DeviceOrientationEvent) {
-        console.warn("L'orientation de l'appareil n'est pas supportée sur ce navigateur.");
-        document.getElementById("orientation").innerHTML = "❌ Orientation non supportée.";
+        alert("L'orientation de l'appareil n'est pas supportée sur ce navigateur.");
         return;
     }
-
-    window.addEventListener("deviceorientation", function(event) {
-        // Vérification que les données sont disponibles
-        if (event.alpha === null || event.beta === null || event.gamma === null) {
-            console.warn("Données d'orientation non disponibles.");
-            document.getElementById("orientation").innerHTML = "⚠️ Données non disponibles.";
-            return;
+    // Demander la permission sur iOS
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission().then(permissionState => {
+            if (permissionState === 'granted') {
+                // Si la permission est accordée, on peut commencer à écouter les données d'orientation
+                        startListening();
+                    } else {
+                        alert("Vous devez autoriser l'accès à l'orientation.");
+                    }
+                }).catch(err => {
+                    console.error("Erreur de demande de permission : ", err);
+                    alert("Erreur lors de la demande de permission.");
+                });
+            } else {
+                // Si la permission n'est pas requise, on commence directement à écouter les données d'orientation
+                startListening();
+            }
         }
 
-        // Récupérer les valeurs d'orientation
-        const alpha = Math.round(event.alpha);  // Rotation autour de l'axe Z (boussole)
-        const beta = Math.round(event.beta);    // Inclinaison avant/arrière (axe X)
-        const gamma = Math.round(event.gamma);  // Inclinaison gauche/droite (axe Y)
+        // Fonction pour écouter les événements d'orientation
+        function startListening() {
+            window.addEventListener("deviceorientation", function(event) {
+                const alpha = event.alpha;  // Rotation autour de l'axe Z (boussole)
+                
+                if (alpha === null) {
+                    document.getElementById("orientation").innerHTML = "Données d'orientation non disponibles.";
+                    return;
+                }
 
-        console.log(`Alpha (Z) : ${alpha}, Beta (X) : ${beta}, Gamma (Y) : ${gamma}`);
+                // Conversion de l'alpha en orientation vers le nord
+                const direction = getDirection(alpha);
 
-        // Affichage des valeurs d'orientation réelles
-        document.getElementById("orientation").innerHTML = 
-            `📍 Alpha (Z) : ${alpha}°<br>
-             🔄 Beta (X) : ${beta}°<br>
-             ↔️ Gamma (Y) : ${gamma}°`;
-    });
-}
+                // Affichage de la direction
+                document.getElementById("orientation").innerHTML = 
+                    `Orientation vers le Nord : ${Math.round(alpha)}° (Direction : ${direction})`;
+            });
+        }
+
+        // Fonction pour déterminer la direction (Nord, Est, Sud, Ouest) en fonction de l'alpha
+        function getDirection(alpha) {
+            if (alpha >= 0 && alpha < 45) {
+                return "Nord";
+            } else if (alpha >= 45 && alpha < 135) {
+                return "Est";
+            } else if (alpha >= 135 && alpha < 225) {
+                return "Sud";
+            } else if (alpha >= 225 && alpha < 315) {
+                return "Ouest";
+            } else {
+                return "Nord";
+            }
+        }
+
+        // Écouter le clic sur le bouton pour démarrer le suivi de l'orientation
+        document.getElementById("startTrackingBtn").addEventListener("click", startOrientationTracking);
 
 
     
