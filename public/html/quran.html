@@ -5,31 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MuslimAssistant</title>
     <link rel="stylesheet" href="../css/styles.css">
-    <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    rel="stylesheet"
-  />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
 </head>
-<style>
+<style> 
     .audio-controls {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      margin-top: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin-top: 20px;
     }
+
     .audio-controls i {
-      font-size: 2rem;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-      background: none; /* Enlève le fond gris par défaut */
-      border: none; /* Enlève les bordures */
-      padding: 10px; /* Optionnel : Ajoute un peu de padding autour des icônes */
+        font-size: 2rem;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        padding: 10px;
     }
+
     .audio-controls i:hover {
-      color: #007bff;
+        color: #007bff;
     }
-  </style>
+
+    #sourateSelect {
+        padding: 10px;
+        margin-bottom: 20px;
+        font-size: 16px;
+    }
+
+    .verse-container {
+    background: linear-gradient(135deg, #001f3f, #000d2d);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    max-width: 700px;
+    margin: 20px auto;
+    direction: rtl;
+    }
+
+    .verse {
+        margin-bottom: 15px;
+        padding: 10px;
+        border-bottom: 1px solid #ffff;
+        transition: background-color 0.3s ease;
+    }
+
+    .verse:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.055);
+        background-color: rgba(255, 255, 255, 0.05); 
+        border-radius: 10px;
+    }
+
+    .verse:last-child {
+        border-bottom: none;
+    }
+
+    .arabic {
+        font-family: 'Amiri', serif;
+        font-size: 40px;
+        text-align: right;
+        direction: rtl;
+        color: white;
+        margin-bottom: 5px;
+    }
+
+    .translation {
+        color: white;
+        text-align: left;
+    }
+
+    select {
+        border-radius: 10px;
+    }
+</style>
 <body>
     <a href="./"><h1>MuslimAssistant</h1></a>
     <h2>Lire le Coran</h2>
@@ -44,31 +94,26 @@
         <i id="stop-button" class="fas fa-stop"></i>
     </div>
 
-
     <div class="verse-container" id="versesContainer"></div>
 
-    <div class="verse-container" id="versesContainer"></div>
-    
 </body>
 <script>
-
 const playButton = document.getElementById("play-button");
 const pauseButton = document.getElementById("pause-button");
 const stopButton = document.getElementById("stop-button");
 
 let coranData = {};
 let currentSourateIndex = -1;
-let audioUrl = ""
+let audioUrl = "";
 
 fetch('/api/coran')
 .then(response => response.json())
 .then(data => {
     coranData = data;
     populateSourateList();
-})
+});
 
 const audio = new Audio();
-
 
 function populateSourateList() {
     const sourateSelect = document.getElementById('sourateSelect');
@@ -80,7 +125,6 @@ function populateSourateList() {
     });
 }
 
-
 function loadSourate() {
     const sourateSelect = document.getElementById('sourateSelect');
     const sourateIndex = parseInt(sourateSelect.value);
@@ -90,43 +134,48 @@ function loadSourate() {
     currentSourateIndex = sourateIndex;
     displaySourate();
 
-    audioUrl = `https://github.com/The-Quran-Project/Quran-Audio/raw/refs/heads/main/Data/1/${currentSourateIndex + 1}.mp3`
+    audioUrl = `https://github.com/The-Quran-Project/Quran-Audio/raw/refs/heads/main/Data/1/${currentSourateIndex + 1}.mp3`;
 }
 
-
 function displaySourate() {
-    if (currentSourateIndex === -1) return;
+    const versesContainer = document.getElementById('versesContainer');
+    if (currentSourateIndex === -1) {
+        // Masquer la div si aucune sourate n'est sélectionnée
+        versesContainer.style.display = 'none';
+        return;
+    }
 
     const sourate = coranData.sourates[currentSourateIndex];
-
-    const versesContainer = document.getElementById('versesContainer');
     versesContainer.innerHTML = ""; // Réinitialiser le contenu
 
-    
     const sourateTitle = document.createElement('h2');
     sourateTitle.textContent = `Sourate : ${sourate.nom_phonetique}`;
     versesContainer.appendChild(sourateTitle);
 
     sourate.versets.forEach((verset, index) => {
-        const verseElement = document.createElement('p');
-        verseElement.innerHTML = `<strong> ${index + 1}. (Arabe):</strong> ${verset.text_arabe}<br><strong>Traduction:</strong> ${verset.text}`;
+        const verseElement = document.createElement('div');
+        verseElement.classList.add("verse");
+        verseElement.innerHTML = `
+            <p class="arabic">${verset.text_arabe} (${index + 1})</p>
+            <p class="translation">${verset.text}</p>
+        `;
         versesContainer.appendChild(verseElement);
     });
+
+    versesContainer.style.display = 'block';
 }
 
+// Audio Player
 playButton.addEventListener("click", () => {
-    audioUrl = `https://github.com/The-Quran-Project/Quran-Audio/raw/refs/heads/main/Data/1/${currentSourateIndex + 1}.mp3`
     audio.src = audioUrl;  
     audio.play();
 });
 
 pauseButton.addEventListener("click", () => {
-    
     if (audio.paused) {
-        audio.play(); // Joue l'audio
+        audio.play();
     } else {
-        
-        audio.pause(); // met en pause l'audio
+        audio.pause();
     }
 });
 
@@ -135,5 +184,6 @@ stopButton.addEventListener("click", () => {
     audio.currentTime = 0;
 });
 
+versesContainer.style.display = 'none';
 </script>
 </html>

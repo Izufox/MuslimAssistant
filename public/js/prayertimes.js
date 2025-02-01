@@ -1,7 +1,9 @@
-function getInputValue() {
-    const inputValue = document.getElementById('cityInput').value;
-    
-    fetch(`/api/data?input=${encodeURIComponent(inputValue)}`)
+fetch('/api/loc')
+    .then(response => response.json())
+    .then(dataloc => {
+        document.getElementById("city").textContent = "Ville: " + dataloc.city
+
+        fetch(`/api/data?input=${encodeURIComponent(dataloc.city)}`)
         .then(response => response.json())
         .then(data => {
             const data_ = data[0];
@@ -13,11 +15,19 @@ function getInputValue() {
             { name: 'Maghrib', key: 'maghrib' },
             { name: 'Isha', key: 'isha' }
             ];
-            document.getElementById("date").textContent = data_.date_for
-            document.getElementById("city").textContent = inputValue
+            document.getElementById("date").textContent = "Date: " + data_.date_for
             prayers.forEach(prayer => {
                 const prayerText = `${prayer.name}: ${data_[prayer.key]}`;
                 document.getElementById(prayer.key).textContent = prayerText;
             });
         })
-}
+        const location = dataloc.loc.split(",")
+        fetch(`https://api.aladhan.com/v1/qibla/${location[0]}/${location[1]}`)
+        .then(response => response.json())
+        .then(data => {
+            const direction = Math.round(data.data.direction)
+
+            document.getElementById("direction").textContent = "Direction: " + direction + "°";
+        })
+
+    })

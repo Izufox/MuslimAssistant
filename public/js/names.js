@@ -3,7 +3,6 @@ const url = "https://raw.githubusercontent.com/KabDeveloper/99-Names-Of-Allah/re
 fetch(url)
   .then(response => response.json()) 
   .then(data => {
-    console.log(data.data);
     data.data.forEach(name => {
         //console.log(name.transliteration, ":", name.en.meaning)
         const ul = document.getElementById('namesList');

@@ -28,7 +28,6 @@ app.get('/versegenerator.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html', 'versegenerator.html'));
 });
 
-
 app.get('/api/coran', (req, res) => {
     res.json(quranData);
 });
@@ -49,6 +48,22 @@ app.get('/api/data', async (req, res) => {
         res.status(500).json({ error: 'Erreur lors de la récupération des données' });
     }
 });
+
+app.get('/api/loc', async (req, res) => {
+    const API_URL = 'https://ipinfo.io/json?token=c432ad7469dc96';
+    
+    try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        
+        // Retourner les données de localisation au client (pas "items", mais les données appropriées)
+        res.json(data);
+    } catch (error) {
+        console.error("Erreur lors de la récupération des données :", error);
+        res.status(500).json({ error: 'Erreur lors de la récupération des données' });
+    }
+});
+
 
 // Démarrer le serveur
 app.listen(port, () => {

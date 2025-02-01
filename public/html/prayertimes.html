@@ -10,17 +10,17 @@
 <body>
     <a href="./"><h1>MuslimAssistant</h1></a>
     <h2>Horaires de Prière</h2>
-    <input type="text" id="cityInput" />
-    <button onclick="getInputValue()" id="prayerbutton">Envoyer</button>
     <div class="container">
-        <p id="city"></p>
-        <p id="date"></p>
+        <p id="city">Ville: </p>
+        <p id="date">Date: </p>
+        <p id="direction">Direction: </p>
         <p id="fajr">Fajr: </p>
         <p id="shurooq">Shurooq: </p>
         <p id="dhuhr">Dhuhr: </p>
         <p id="asr">Asr: </p>
         <p id="maghrib">Maghrib: </p>
         <p id="isha">Isha: </p>
+        
     </div>
     <script src="../js/prayertimes.js"></script>
 </body>
@@ -28,9 +28,9 @@
     .container {
       text-align: center;
       padding: 1%;
-      margin-top: 3%;
+      margin-top: 1%;
       border-radius: 10px;
-      background-color: #001f3f; /* Fond légèrement plus clair */
+      background: linear-gradient(135deg, #001f3f, #000d2d);
       box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3); /* Ombre subtile */
       width: 90%;
       max-width: 300px;
