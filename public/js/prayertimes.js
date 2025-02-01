@@ -50,4 +50,38 @@ if ("geolocation" in navigator) {
     } else {
         console.error("La géolocalisation n'est pas supportée par ce navigateur.");
     }
+
+    async function requestPermission() {
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            try {
+                const permissionState = await DeviceOrientationEvent.requestPermission();
+                if (permissionState === 'granted') {
+                    console.log("Permission accordée !");
+                    startOrientationTracking();
+                } else {
+                    console.log("Permission refusée.");
+                }
+            } catch (error) {
+                console.error("Erreur lors de la demande de permission :", error);
+            }
+        } else {
+            console.log("L'API DeviceOrientation est directement accessible.");
+            startOrientationTracking();
+        }
+    }
+
+    function startOrientationTracking() {
+        window.addEventListener("deviceorientation", function(event) {
+            const alpha = event.alpha; // Rotation autour de l’axe Z (boussole)
+            const beta = event.beta;   // Inclinaison avant/arrière
+            const gamma = event.gamma; // Inclinaison gauche/droite
+    
+            console.log(`Alpha (Z) : ${alpha}, Beta (X) : ${beta}, Gamma (Y) : ${gamma}`);
+            
+            document.getElementById("orientation").innerHTML = 
+                `📍 Alpha (Z) : ${Math.round(alpha)}°<br>
+                 🔄 Beta (X) : ${Math.round(beta)}°<br>
+                 ↔️ Gamma (Y) : ${Math.round(gamma)}°`;
+        });
+    }
     
