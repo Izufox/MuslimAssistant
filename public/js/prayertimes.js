@@ -80,29 +80,27 @@ function startOrientationTracking() {
     }
 
     window.addEventListener("deviceorientation", function(event) {
+        // Vérification que les données sont disponibles
         if (event.alpha === null || event.beta === null || event.gamma === null) {
             console.warn("Données d'orientation non disponibles.");
             document.getElementById("orientation").innerHTML = "⚠️ Données non disponibles.";
             return;
         }
 
-        // Définir l'alpha initial lors de la première détection
-        if (initialAlpha === null) {
-            initialAlpha = event.alpha;
-        }
-
-        // Calculer la rotation par rapport à l'orientation initiale
-        const alpha = Math.round(event.alpha - initialAlpha);
-        const beta = Math.round(event.beta);
-        const gamma = Math.round(event.gamma);
+        // Récupérer les valeurs d'orientation
+        const alpha = Math.round(event.alpha);  // Rotation autour de l'axe Z (boussole)
+        const beta = Math.round(event.beta);    // Inclinaison avant/arrière (axe X)
+        const gamma = Math.round(event.gamma);  // Inclinaison gauche/droite (axe Y)
 
         console.log(`Alpha (Z) : ${alpha}, Beta (X) : ${beta}, Gamma (Y) : ${gamma}`);
 
+        // Affichage des valeurs d'orientation réelles
         document.getElementById("orientation").innerHTML = 
-            `📍 Alpha (Z) : ${alpha}° (par rapport au départ)<br>
+            `📍 Alpha (Z) : ${alpha}°<br>
              🔄 Beta (X) : ${beta}°<br>
              ↔️ Gamma (Y) : ${gamma}°`;
     });
 }
+
 
     
